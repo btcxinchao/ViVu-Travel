@@ -1,6 +1,6 @@
-import Header from './Header/Header';
-import Footer from './Footer/Footer';
-import Slidebar from './Slidebar/Slidebar.jsx';
+import Header from '../Components/Header/Header.jsx';
+import Footer from '../Components/Footer/Footer.jsx';
+import Slidebar from '../Components/Slidebar/Slidebar.jsx';
 import { Outlet } from 'react-router-dom';
 function Layout() {
     return (
@@ -8,10 +8,11 @@ function Layout() {
             <Header />
 
             <main className="flex flex-1 w-full">
-                <div className="flex-1 px-5 md:px-20 py-4 px-0 md:px-0 py-0">
+                <div className="flex-1 px-5 md:px-20 py-4">
                     <Outlet />
                 </div>
             </main>
+
             <Footer />
         </div>
     );
