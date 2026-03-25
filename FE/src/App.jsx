@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import axios from "axios";
 import './App.css'
-
+import Routers from './routers/routers.jsx'
 function App() {
 
   useEffect(() => {
@@ -10,10 +10,8 @@ function App() {
       .catch(err => console.log(err));
   }, []);
   return (
-    <h1>
-      Test API
-    </h1>
-  )
+    <Routers></Routers>
+  );
 }
 
-export default App
+export default App;
