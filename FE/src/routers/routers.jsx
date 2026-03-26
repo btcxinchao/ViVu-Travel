@@ -1,19 +1,20 @@
-import { Routes, Route } from 'react-router-dom'
-import Layout from '../layout/Layout.jsx'
-import HomePage from '../Pages/HomePage/HomePage.jsx'
+import { Routes, Route } from 'react-router-dom';
+import Layout from '../layout/Layout.jsx';
+import HomePage from '../Pages/HomePage/HomePage.jsx';
 import AuthLayout from '../layout/AuthLayout.jsx';
+import Register from '../Pages/Register/Register.jsx';
 
 function Routers() {
     return (
         <Routes>
             {/* Layout chính */}
-            <Route path="/" element={<Layout />}>
-                <Route index element={<HomePage />} />
+            <Route element={<Layout />}>
+                <Route path="/" element={<HomePage />} />
             </Route>
 
-            {/* Layout auth (ko header/footer) */}
+            {/* Layout auth */}
             <Route element={<AuthLayout />}>
-
+                <Route path="/register" element={<Register />} />
             </Route>
         </Routes>
     );
