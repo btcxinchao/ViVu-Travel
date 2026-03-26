@@ -2,7 +2,8 @@ import Header from '../Components/Header/Header.jsx';
 import Footer from '../Components/Footer/Footer.jsx';
 import Slidebar from '../Components/Slidebar/Slidebar.jsx';
 import { Outlet } from 'react-router-dom';
-function Layout() {
+
+function PublicLayout() {
     return (
         <div className="min-h-screen flex flex-col w-full">
             <Header />
@@ -18,4 +19,4 @@ function Layout() {
     );
 }
 
-export default Layout;
+export default PublicLayout;
