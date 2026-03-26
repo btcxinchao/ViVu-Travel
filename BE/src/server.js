@@ -1,32 +1,29 @@
 import express from "express";
 import dotenv from "dotenv";
-import { connectDB } from "./libs/db.js";
-import authRoute from './routes/authRoute.js';
-import userRoute from './routes/userRoute.js';
-import cookieParser from 'cookie-parser';
-// import { protectedRoute } from "./middlewares/authMiddleware.js";
-// import { authorizeRoles } from "./middlewares/roleMiddleware.js";
+import cookieParser from "cookie-parser";
+
+import { connectDB } from "./Config/db.js";
+import routerClient from "./routes/client/index.routes.js";
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-// middlewares
+// ✅ Middlewares
 app.use(express.json());
 app.use(cookieParser());
 
-// public routes
-app.use('/api/auth', authRoute);
-//private routes
-// app.use(protectedRoute)
-// app.use(authorizeRoles)
-app.use('/api/users', userRoute);
-connectDB().then(() => {
-  app.listen(port, () => {
-      console.log(`Example app listening on port ${port}`);
+// ✅ Routes
+routerClient(app);
+
+// ✅ Connect DB rồi mới chạy server
+connectDB()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
     });
-});
-
-
-
+  })
+  .catch((err) => {
+    console.error("DB connection failed:", err);
+  });

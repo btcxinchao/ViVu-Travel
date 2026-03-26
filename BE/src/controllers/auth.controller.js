@@ -101,40 +101,53 @@ export const signOut = async (req, res) => {
     }
 }
 
-// tạo access token mới từ refresh token
-export const refreshToken = async (req, res) => {
-  try {
-    // lấy refresh token từ cookie
-    const token = req.cookies?.refreshToken;
-    if (!token) {
-      return res.status(401).json({ message: "Token không tồn tại." });
+export const authClient = async (req, res) => {
+    try {
+        const user = req.user; // lay tu authMiddleware
+        return res.status(200).json({
+            user
+        })
+    } catch (error) {
+        console.error('Loi khi goi authClient', error);
+        return res.status(500).json({message: "loi he thong"})
+        
     }
+}
 
-    // so với refresh token trong db
-    const session = await Session.findOne({ refreshToken: token });
+// // tạo access token mới từ refresh token
+// export const refreshToken = async (req, res) => {
+//   try {
+//     // lấy refresh token từ cookie
+//     const token = req.cookies?.refreshToken;
+//     if (!token) {
+//       return res.status(401).json({ message: "Token không tồn tại." });
+//     }
 
-    if (!session) {
-      return res.status(403).json({ message: "Token không hợp lệ hoặc đã hết hạn" });
-    }
+//     // so với refresh token trong db
+//     const session = await Session.findOne({ refreshToken: token });
 
-    // kiểm tra hết hạn chưa
-    if (session.expiresAt < new Date()) {
-      return res.status(403).json({ message: "Token đã hết hạn." });
-    }
+//     if (!session) {
+//       return res.status(403).json({ message: "Token không hợp lệ hoặc đã hết hạn" });
+//     }
 
-    // tạo access token mới
-    const accessToken = jwt.sign(
-      {
-        userId: session.userId,
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: ACCESS_TOKEN_TTL }
-    );
+//     // kiểm tra hết hạn chưa
+//     if (session.expiresAt < new Date()) {
+//       return res.status(403).json({ message: "Token đã hết hạn." });
+//     }
 
-    // return
-    return res.status(200).json({ accessToken });
-  } catch (error) {
-    console.error("Lỗi khi gọi refreshToken", error);
-    return res.status(500).json({ message: "Lỗi hệ thống" });
-  }
-};
+//     // tạo access token mới
+//     const accessToken = jwt.sign(
+//       {
+//         userId: session.userId,
+//       },
+//       process.env.ACCESS_TOKEN_SECRET,
+//       { expiresIn: ACCESS_TOKEN_TTL }
+//     );
+
+//     // return
+//     return res.status(200).json({ accessToken });
+//   } catch (error) {
+//     console.error("Lỗi khi gọi refreshToken", error);
+//     return res.status(500).json({ message: "Lỗi hệ thống" });
+//   }
+// };
