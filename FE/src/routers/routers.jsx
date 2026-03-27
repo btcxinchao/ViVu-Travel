@@ -1,9 +1,9 @@
-import { Routes, Route } from 'react-router-dom'
-import PublicLayout from '../layout/PublicLayout.jsx'
-import HomePage from '../Pages/HomePage/HomePage.jsx'
+import { Routes, Route } from 'react-router-dom';
+import PublicLayout from '../layout/PublicLayout.jsx';
+import HomePage from '../Pages/HomePage/HomePage.jsx';
 // import AuthLayout from '../layout/AuthLayout.jsx';
 import SignIn from '../Pages/Auth/SignIn/Signin.jsx';
-
+import Register from '../Pages/HomePage/Register.jsx';
 
 function Routers() {
     return (
@@ -12,11 +12,16 @@ function Routers() {
             <Route path="/" element={<PublicLayout />}>
                 <Route index element={<HomePage />} />
                 <Route path="/SignIn" element={<SignIn />} />
+                
+                {/* Đã thêm Register vào đây */}
+                <Route path="/Register" element={<Register />} />
             </Route>
-
+                
+        
             {/* Layout auth (ko header/footer)
             <Route element={<AuthLayout />}>
                 <Route path="/SignIn" element={<SignIn />} />
+                <Route path="/Register" element={<Register />} />
             </Route> */}
         </Routes>
     );

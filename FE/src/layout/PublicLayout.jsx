@@ -7,12 +7,9 @@ function PublicLayout() {
     return (
         <div className="min-h-screen flex flex-col w-full">
             <Header />
-
-            <main className="flex flex-1 w-full">
-                <div className="flex-1 px-5 md:px-20 py-4">
-                    <Outlet />
-                </div>
-            </main>
+<main className="flex flex-1 w-full">
+    <Outlet />
+</main>
 
             <Footer />
         </div>
