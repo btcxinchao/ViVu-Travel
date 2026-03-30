@@ -61,7 +61,7 @@ body {
   margin: 0 auto;
   text-align: center;
   border-inline: 1px solid var(--border);
-  min-height: 100svh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -70,12 +70,12 @@ body {
 h1,
 h2 {
   font-family: var(--heading);
-  font-weight: 450;
+  font-weight: 250;
   color: var(--text-h);
 }
 
 h1 {
-  font-size: 56px;
+  font-size: 3rem;
   letter-spacing: -1.68px;
   margin: 32px 0;
 

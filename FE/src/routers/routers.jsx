@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import PublicLayout from '../layout/PublicLayout.jsx'
 import HomePage from '../Pages/HomePage/HomePage.jsx'
 // import AuthLayout from '../layout/AuthLayout.jsx';
-import SignIn from '../Pages/Auth/SignIn/Signin.jsx';
+import SignIn from '../Pages/Auth/SignIn/SignIn.jsx';
 
 
 function Routers() {
