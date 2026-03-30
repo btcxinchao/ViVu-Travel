@@ -1,12 +1,12 @@
 import express from "express";
-import { ServicesDetail,createService,DeleteService,ListServices,UpdateService } from "../../controllers/client/services.controller.js";
+import { ServicesDetail,createService,DeleteService,GetAllServices,UpdateService } from "../../controllers/client/services.controller.js";
 
 const router = express.Router();
 
-router.get("/servicesDetail", ServicesDetail);
 router.post("/createService", createService);
-router.put("/updateService", UpdateService);
+router.put("/updateService/:id", UpdateService);
 router.delete("/deleteService", DeleteService);
-router.get("/listServices", ListServices);
+router.get("/servicesDetail/:id", ServicesDetail);
+router.get("/listServices", GetAllServices); //get ALL 
 
 export default router;
