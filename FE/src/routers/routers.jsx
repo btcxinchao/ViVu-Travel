@@ -1,8 +1,9 @@
 import { Routes, Route } from 'react-router-dom'
 import PublicLayout from '../layout/PublicLayout.jsx'
 import HomePage from '../Pages/HomePage/HomePage.jsx'
-// import AuthLayout from '../layout/AuthLayout.jsx';
+
 import SignIn from '../Pages/Auth/SignIn/SignIn.jsx';
+import Register from '../Pages/Register/Register.jsx';
 
 
 function Routers() {
@@ -12,6 +13,7 @@ function Routers() {
             <Route path="/" element={<PublicLayout />}>
                 <Route index element={<HomePage />} />
                 <Route path="/SignIn" element={<SignIn />} />
+                <Route path="/Register" element={<Register />} />
             </Route>
 
             {/* Layout auth (ko header/footer)

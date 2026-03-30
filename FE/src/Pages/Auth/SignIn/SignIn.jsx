@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from 'react-router-dom';
 import { FaLocationDot, FaRegEye, FaRegEyeSlash } from "../../../assets/Icons/Icons";
 
 function SignIn() {
@@ -87,9 +88,9 @@ function SignIn() {
                     <div className="mt-8">
                         <p className="text-center text-sm text-gray-500 mt-5 ">
                             Chưa có tài khoản?
-                            <a href="" className="text-sky-600 font-medium hover:text-sky-700 mx-2 ">
+                            <Link to="/Register" className="text-sky-600 font-medium hover:text-sky-700 mx-2 ">
                                 Đăng ký ngay
-                            </a>
+                            </Link>
                         </p>
                     </div>
                 </div>

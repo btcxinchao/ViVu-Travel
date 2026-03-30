@@ -41,7 +41,7 @@ function Header() {
 
                     <Link
                         className="text-sm font-medium text-white px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-teal-500 hover:from-sky-600 hover:to-teal-600 transition-all shadow-sm"
-                        to="#"
+                        to="/Register"
                     >
                         Đăng ký
                     </Link>
