@@ -4,15 +4,12 @@ const accountSchema = new mongoose.Schema({
     fullName: {
         type: String,
         required: true,
-        trim: true
+        unique: true
     },
     email: {
         type: String,
-        unique: true,
         required: true,
-        lowercase: true,
-        trim: true,
-        match: [/^\S+@\S+\.\S+$/, 'Email không hợp lệ']
+        unique: true
     },
     password: {
         type: String,
@@ -24,7 +21,6 @@ const accountSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        match: [/^[0-9]{9,11}$/, 'Số điện thoại không hợp lệ']
     },
     gender: {
         type: String,

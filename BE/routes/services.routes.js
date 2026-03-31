@@ -5,6 +5,7 @@ const servicesController = require('../controllers/services.controller.js')
 // POST:  thêm 
 router.post('/addServices',servicesController.addServices)
 
+
 //PUT : sửa 
 router.put('/updateServices/:id',servicesController.updateServices)
 
