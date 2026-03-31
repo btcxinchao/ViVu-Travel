@@ -110,7 +110,7 @@ export default function Register() {
               </div>
             </div>
 
-            {/* Confirm Password */}
+
             <div>
               <label className="text-sm font-medium text-gray-700 mb-1 block  text-left">
                 Xác nhận mật khẩu
