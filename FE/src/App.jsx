@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import axios from "axios";
-import './App.css'
+import './App.jsx'
 import Routers from './routers/routers.jsx'
 function App() {
 

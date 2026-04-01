@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom'
 import PublicLayout from '../layout/PublicLayout.jsx'
-import HomePage from '../Pages/HomePage/HomePage.jsx'
+import HomePage from '../Pages/HomePage.jsx'
 
-import SignIn from '../Pages/Auth/SignIn/SignIn.jsx';
-import Register from '../Pages/Register/Register.jsx';
+import SignIn from '../Pages/Auth/SignIn.jsx';
+import Register from '../Pages/Auth/Register.jsx';
 
 
 function Routers() {

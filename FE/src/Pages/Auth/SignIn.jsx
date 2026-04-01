@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
-import { FaLocationDot, FaRegEye, FaRegEyeSlash } from "../../../assets/Icons/Icons";
+import { FaLocationDot, FaRegEye, FaRegEyeSlash } from "../../../src/assets/Icons/Icons";
+import CustomApi from "../../Server";
 
 function SignIn() {
     const [form, setForm] = useState({
-        email: "",
+        username: "",
         password: ""
     });
 
@@ -18,10 +19,28 @@ function SignIn() {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(form);
-    };
+        try {
+            const res = await CustomApi({
+                Url: "/api/users/signin",
+                method: "POST",
+                data: form
+            });
+            const accestoken = res.accessToken
+            // if (!accestoken) {
+            //     const sendToken = await CustomApi({
+            //         Url: "/api/createService",
+            //         method: "POST",
+
+            //     })
+            // }
+        } catch (error) {
+            alert("Đăng nhập thất bại: " + error);
+            throw error;
+        }
+    }
+
 
 
     return (
@@ -42,15 +61,15 @@ function SignIn() {
                     <form className="space-y-4" onSubmit={handleSubmit}>
                         <div>
                             <label className="text-sm font-medium text-gray-700 flex items-center gap-1.5 mb-1.5">
-                                Email
+                                Tên Đăng Nhập
                             </label>
                             <input
-                                type="email"
-                                name="email"
-                                value={form.email}
+                                type="text"
+                                name="username"
+                                value={form.username}
                                 onChange={handleChange}
                                 className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-100 transition"
-                                placeholder="abc@gmail.com"
+                                placeholder="user3"
                             />
                         </div>
 
