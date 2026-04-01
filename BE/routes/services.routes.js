@@ -1,27 +1,12 @@
 const express = require('express');
-const router = express.Router()
-const servicesController = require('../controllers/services.controller.js')
-
-// POST:  thêm 
-router.post('/addServices',servicesController.addServices)
-
-
-//PUT : sửa 
-router.put('/updateServices/:id',servicesController.updateServices)
-
-//DELETE 1 : xóa 
-router.delete('/deleteOne/:id',servicesController.deleteOne)
-//xóa nhiều 
-router.post('/deleteServices',servicesController.deleteServices)
-
-//GET chi tiết 1 
-router.get('/servicesDetail/',servicesController.servicesDetail)
-
-//GET tất cả 
-router.get('/allServices',servicesController.allServices)
+const router = express.Router();
+const servicesController = require('../controllers/services.controller.js');
+const { verifyToken, authorizeRoles } = require('../middlewares/auth.middlewares.js');
 
 
 
+router.post('/deleteServices', verifyToken, authorizeRoles('provider'), servicesController.deleteServices);
+router.get('/servicesDetail/:id', servicesController.servicesDetail);
+router.get('/allServices', servicesController.allServices);
 
-
-module.exports = router
+module.exports = router;

@@ -16,6 +16,10 @@ const accountSchema = new mongoose.Schema({
         required: true,
         minlength: 6
     },
+    refreshToken: {
+        type: String,
+        default: null
+    },
     address: {
         type: String
     },

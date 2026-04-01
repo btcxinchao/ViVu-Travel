@@ -5,7 +5,7 @@ const serviceSchema = new mongoose.Schema({
         type: String,
         unique: true
     },
-    supplierID: {
+    supplier: {
         type: String,
         required: true
     },
