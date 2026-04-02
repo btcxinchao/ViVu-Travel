@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaFacebook, FaInstagram, FaYoutube, FaPhone, FaLocationDot, SiGmail } from "../../assets/Icons/Icons";
+import { FaFacebook, FaInstagram, FaYoutube, FaPhone, FaLocationDot, SiGmail } from "../assets/Icons/Icons";
 function Footer() {
     return (
         <footer className="bg-gray-900 text-gray-300">

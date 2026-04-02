@@ -67,12 +67,16 @@ body {
   box-sizing: border-box;
 }
 
+<<<<<<< HEAD
 h1,
 h2 {
   font-family: var(--heading);
   font-weight: 250;
   color: var(--text-h);
 }
+=======
+
+>>>>>>> feature/fe-register
 
 h1 {
   font-size: 3rem;
@@ -96,10 +100,14 @@ h2 {
   }
 }
 
+<<<<<<< HEAD
 p {
   margin: 0;
 
 }
+=======
+p {}
+>>>>>>> feature/fe-register
 
 code,
 .counter {
