@@ -62,9 +62,7 @@ const serviceSchema = new mongoose.Schema({
         day: Number,
         title: String,
         description: String
-    }],
-
-    
+    }], 
     duration: {
         type: String
     }, // "4 ngày 3 đêm"
