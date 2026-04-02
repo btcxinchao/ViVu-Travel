@@ -5,7 +5,7 @@ const { generateAccessToken, generateRefreshToken } = require("../utils/jwt.js")
 
 module.exports.register = async (req, res) => {
     try {
-        const { fullName, email, phone, password, confirmPass } = req.body;
+        const { fullName, email, phone, password, confirmPass,role } = req.body;
 
         if (!fullName || !email || !phone || !password || !confirmPass) {
             return res.status(400).json({ message: "Thiếu thông tin đăng ký" });
@@ -33,7 +33,8 @@ module.exports.register = async (req, res) => {
             fullName,
             email,
             phone,
-            password: hashedPassword
+            password: hashedPassword,
+            role 
         });
 
         return res.status(201).json({

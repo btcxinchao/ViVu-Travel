@@ -1,174 +1,50 @@
-const fs = require("fs");
-const path = require("path");
 const services = require("../models/services.model.js");
-
-const removeFileIfExists = (filePath) => {
-  if (!filePath) {
-    return;
-  }
-
-  const normalizedPath = filePath.replace(/^\//, "").replace(/\//g, path.sep);
-  const absolutePath = path.join(__dirname, "..", normalizedPath);
-
-  if (fs.existsSync(absolutePath)) {
-    fs.unlinkSync(absolutePath);
-  }
-};
-
-const removeUploadedFiles = (files = {}) => {
-  Object.values(files)
-    .flat()
-    .forEach((file) => {
-      if (file?.path && fs.existsSync(file.path)) {
-        fs.unlinkSync(file.path);
-      }
-    });
-};
-
-const parseJsonField = (value, fallback = undefined) => {
-  if (value === undefined || value === null || value === "") {
-    return fallback;
-  }
-
-  if (typeof value !== "string") {
-    return value;
-  }
-
-  try {
-    return JSON.parse(value);
-  } catch (error) {
-    return fallback;
-  }
-};
-
-const normalizeStringArray = (value) => {
-  const parsedValue = parseJsonField(value, value);
-
-  if (Array.isArray(parsedValue)) {
-    return parsedValue.map((item) => String(item).trim()).filter(Boolean);
-  }
-
-  if (typeof parsedValue === "string") {
-    return parsedValue
-      .split(",")
-      .map((item) => item.trim())
-      .filter(Boolean);
-  }
-
-  return [];
-};
-
-const buildPublicFilePath = (file) => `/uploads/services/${file.filename}`;
-
-const slugify = (value) =>
-  String(value || "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
-const generateUniqueSlug = async (serviceName, currentId) => {
-  const baseSlug = slugify(serviceName) || `service-${Date.now()}`;
-  let slug = baseSlug;
-  let counter = 1;
-
-  while (
-    await services.exists({
-      slug,
-      ...(currentId ? { _id: { $ne: currentId } } : {}),
-    })
-  ) {
-    slug = `${baseSlug}-${counter}`;
-    counter += 1;
-  }
-
-  return slug;
-};
-
-const generateUniqueTourId = async () => {
-  let tourID = `SRV-${Date.now()}`;
-
-  while (await services.exists({ tourID })) {
-    tourID = `SRV-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-  }
-
-  return tourID;
-};
-
-const prepareServicePayload = async (req, currentService) => {
-  const payload = { ...req.body };
-  const uploadedThumbnail = req.files?.thumbnail?.[0];
-  const uploadedImages = req.files?.images || [];
-  const existingImages = normalizeStringArray(
-    payload.existingImages !== undefined ? payload.existingImages : payload.images
-  );
-  const parsedSchedule = parseJsonField(payload.schedule, payload.schedule);
-
-  delete payload.existingImages;
-
-  if (parsedSchedule !== undefined) {
-    payload.schedule = Array.isArray(parsedSchedule) ? parsedSchedule : [];
-  }
-
-  if (payload.prices !== undefined) {
-    payload.prices = Number(payload.prices);
-  }
-
-  if (payload.rating !== undefined) {
-    payload.rating = Number(payload.rating);
-  }
-
-  if (payload.total_review !== undefined) {
-    payload.total_review = Number(payload.total_review);
-  }
-
-  if (!payload.slug && payload.servicesName) {
-    payload.slug = await generateUniqueSlug(payload.servicesName, currentService?._id);
-  }
-
-  if (!payload.tourID && !currentService) {
-    payload.tourID = await generateUniqueTourId();
-  }
-
-  if (uploadedThumbnail) {
-    payload.thumbnail = buildPublicFilePath(uploadedThumbnail);
-  } else if (!currentService && typeof payload.thumbnail === "string") {
-    payload.thumbnail = payload.thumbnail.trim();
-  } else if (!currentService && !payload.thumbnail) {
-    delete payload.thumbnail;
-  } else if (currentService && payload.thumbnail !== undefined) {
-    payload.thumbnail = String(payload.thumbnail).trim();
-  }
-
-  const uploadedImagePaths = uploadedImages.map(buildPublicFilePath);
-
-  if (!currentService) {
-    payload.images = [...existingImages, ...uploadedImagePaths];
-  } else if (uploadedImages.length > 0 || payload.images !== undefined) {
-    payload.images = [...existingImages, ...uploadedImagePaths];
-  } else {
-    delete payload.images;
-  }
-
-  return payload;
-};
 
 module.exports.addServices = async (req, res) => {
   try {
-    const payload = await prepareServicePayload(req);
-    const newService = await services.create(payload);
+    // Lấy dữ liệu từ body gửi lên
+    const { tourID, supplier, servicesName, slug,
+      category, destination,descriptionDetail,prices, rating,
+      total_review, status, location, thumbnail, images, schedule,
+      duration,highlights,includedServices,meals, experiences,
+      accommodation,policies, supplierRating,tags,} = req.body;
+
+    // Tạo service mới
+    const newService = new services({
+      tourID,
+      supplier,
+      servicesName,
+      slug,
+      category,
+      destination,
+      descriptionDetail,
+      prices,
+      rating,
+      total_review,
+      status,
+      location,
+      thumbnail,
+      images,
+      schedule,
+      duration,
+      highlights,
+      includedServices,
+      meals,experiences,
+      accommodation, policies,
+      supplierRating, tags,
+    });
+
+    // Lưu vào DB
+    const saveData = await newService.save();
 
     return res.status(201).json({
-      message: "Them dich vu thanh cong",
-      data: newService,
+      message: "Thêm dịch vụ thành công",
+      data: saveData,
     });
   } catch (error) {
-    removeUploadedFiles(req.files);
-
-    return res.status(400).json({
-      message: error.message || "Them dich vu that bai",
+    return res.status(500).json({
+      message: "Lỗi khi thêm dịch vụ",
+      error: error.message,
     });
   }
 };
@@ -176,124 +52,152 @@ module.exports.addServices = async (req, res) => {
 module.exports.putServices = async (req, res) => {
   try {
     const { id } = req.params;
-    const currentService = await services.findById(id);
+    const updateData = req.body;
 
-    if (!currentService) {
-      removeUploadedFiles(req.files);
-
-      return res.status(404).json({ message: "Khong tim thay dich vu" });
+    // Nếu có file mới thì thay ảnh, nếu không thì giữ nguyên ảnh cũ từ body
+    if (req.file) {
+      updateData.thumbnail = req.file.path; // multer sẽ lưu vào /uploads
     }
 
-    const payload = await prepareServicePayload(req, currentService);
-    const updatedService = await services.findByIdAndUpdate(id, payload, {
-      new: true,
-      runValidators: true,
-    });
+    const updatedService = await services.findByIdAndUpdate(
+      id,
+      updateData,
+      { new: true, runValidators: true, overwrite: true }
+    );
 
     if (!updatedService) {
-      removeUploadedFiles(req.files);
-
-      return res.status(404).json({ message: "Khong tim thay dich vu" });
-    }
-
-    if (req.files?.thumbnail?.[0] && currentService.thumbnail) {
-      removeFileIfExists(currentService.thumbnail);
-    }
-
-    if (payload.images) {
-      const removedImages = (currentService.images || []).filter(
-        (image) => !payload.images.includes(image)
-      );
-
-      removedImages.forEach(removeFileIfExists);
+      return res.status(404).json({ message: "Service không tồn tại" });
     }
 
     return res.status(200).json({
-      message: "Cap nhat dich vu thanh cong",
+      message: "Cập nhật toàn bộ dịch vụ thành công",
       data: updatedService,
     });
   } catch (error) {
-    removeUploadedFiles(req.files);
-
-    return res.status(400).json({
-      message: error.message || "Cap nhat dich vu that bai",
+    return res.status(500).json({
+      message: "Lỗi khi cập nhật dịch vụ",
+      error: error.message,
     });
   }
 };
 
-module.exports.deleteOne = async (req, res) => {
+module.exports.patchServices = async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedService = await services.findByIdAndDelete(id);
+    const updateFields = req.body;
 
-    if (!deletedService) {
-      return res.status(404).json({ message: "Khong tim thay dich vu" });
+    if (req.file) {
+      updateFields.thumbnail = req.file.path;
     }
 
-    removeFileIfExists(deletedService.thumbnail);
-    (deletedService.images || []).forEach(removeFileIfExists);
+    const updatedService = await services.findByIdAndUpdate(
+      id,
+      { $set: updateFields },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedService) {
+      return res.status(404).json({ message: "Service không tồn tại" });
+    }
 
     return res.status(200).json({
-      message: "Xoa dich vu thanh cong",
+      message: "Cập nhật một phần dịch vụ thành công",
+      data: updatedService,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Lỗi khi cập nhật dịch vụ",
+      error: error.message,
+    });
+  }
+};
+
+// Xóa một service theo ID
+module.exports.deleteOne = async (req, res) => {
+  try {
+    //lấy ra id services và xóa đi sv đó
+    const {
+      id
+    } = req.params;
+    const deletedService = await Services.findByIdAndDelete(id);
+
+    //check đk để xóa
+    if (!deletedService) {
+      return res.status(404).json({
+        message: "Service không tồn tại"
+      });
+    }
+
+    return res.status(200).json({
+      message: "Xóa service thành công",
+
+      //id sản phẩm đã xóa
       data: deletedService,
     });
   } catch (error) {
-    return res.status(400).json({
-      message: error.message || "Xoa dich vu that bai",
+    return res.status(500).json({
+      message: "Lỗi server"
     });
   }
 };
 
+// Xóa nhiều service theo danh sách ID
 module.exports.deleteServices = async (req, res) => {
   try {
-    const { ids } = req.body;
+    const {
+      ids
+    } = req.body;
+    // nhận mảng id từ body
 
-    if (!Array.isArray(ids) || ids.length === 0) {
-      return res.status(400).json({ message: "Danh sach ids khong hop le" });
+    if (!ids || !Array.isArray(ids)) {
+      return res.status(400).json({
+        message: "Danh sách ID không hợp lệ"
+      });
     }
 
-    const listServices = await services.find({ _id: { $in: ids } });
-    const result = await services.deleteMany({ _id: { $in: ids } });
-
-    listServices.forEach((item) => {
-      removeFileIfExists(item.thumbnail);
-      (item.images || []).forEach(removeFileIfExists);
+    const result = await Services.deleteMany({
+      _id: {
+        $in: ids
+      }
     });
 
     return res.status(200).json({
-      message: "Xoa nhieu dich vu thanh cong",
-      data: result,
+      message: "Xóa nhiều service thành công",
+      deletedCount: result,
     });
   } catch (error) {
-    return res.status(400).json({
-      message: error.message || "Xoa nhieu dich vu that bai",
+    return res.status(500).json({
+      message: "Lỗi server"
     });
   }
 };
-
-module.exports.servicesDetail = async (req, res) => {
+//hoàn thành
+exports.servicesDetail = async (req, res) => {
   try {
-    const { id } = req.params;
+    const {
+      id
+    } = req.params;
     const service = await services.findById(id);
 
     if (!service) {
-      return res.status(404).json({ message: "Khong tim thay dich vu" });
+      return res.status(404).json({
+        message: "Không tìm thấy dịch vụ"
+      });
     }
-
-    return res.status(200).json({
-      message: "Lay chi tiet dich vu thanh cong",
-      data: service,
-    });
+    res.json(service);
   } catch (error) {
-    return res.status(400).json({
-      message: error.message || "Lay chi tiet dich vu that bai",
+    res.status(500).json({
+      error: error.message
     });
   }
 };
 
+//hoàn thành
 module.exports.allServices = async (req, res) => {
   try {
-    const listServices = await services.find({}).sort({ createdAt: -1 });
+    const listServices = await services.find({}).sort({
+      createdAt: -1
+    });
 
     return res.status(200).json({
       message: "Lay danh sach dich vu thanh cong",

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const serviceSchema = new mongoose.Schema({
     tourID: {
@@ -47,7 +47,7 @@ const serviceSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ["approval", "reject", "pending"],
-        default: "pending"
+        default: "pending",
     },
     location: {
         type: String
@@ -55,22 +55,47 @@ const serviceSchema = new mongoose.Schema({
     thumbnail: {
         type: String
     },
-    images: [
-        {
-            type: String
-        }
-    ],
-    schedule: [
-        {
-            day: Number,
-            title: String,
-            description: String
-        }
-    ]
+    images: [{
+        type: String
+    }],
+    schedule: [{
+        day: Number,
+        title: String,
+        description: String
+    }],
+
+    
+    duration: {
+        type: String
+    }, // "4 ngày 3 đêm"
+    highlights: [{
+        type: String
+    }],
+    includedServices: [{
+        type: String
+    }],
+    meals: {
+        type: Number
+    },
+    experiences: {
+        type: Number
+    },
+    accommodation: [{
+        day: Number,
+        hotel: String
+    }],
+    policies: [{
+        type: String
+    }],
+    supplierRating: {
+        type: Number
+    },
+    tags: [{
+        type: String
+    }],
 }, {
     timestamps: true
-});
+}, );
 
-const Services = mongoose.model('services', serviceSchema);
-
+const Services = mongoose.model("services", serviceSchema);
 module.exports = Services;
