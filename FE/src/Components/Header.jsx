@@ -4,7 +4,7 @@ import { SiGmail } from "react-icons/si";
 import { Link } from "react-router-dom";
 
 function Header() {
-    const [isCheck, setIsCheck] = useState(true);
+    const [isCheck, setIsCheck] = useState(false);
 
     return (
         <nav className="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
