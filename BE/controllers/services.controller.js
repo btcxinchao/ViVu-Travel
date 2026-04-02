@@ -175,7 +175,12 @@ module.exports.deleteServices = async (req, res) => {
 
     const DeleteMany = await services.deleteMany({ _id: { $in: ids } });
 
-    return res.status(200).json({ message: "Xóa nhiều service thành công",deletedCount: DeleteMany,});
+    return res
+      .status(200)
+      .json({
+        message: "Xóa nhiều service thành công",
+        deletedCount: DeleteMany,
+      });
   } catch (error) {
     return res.status(500).json({
       message: "Lỗi server",
@@ -204,7 +209,7 @@ exports.servicesDetail = async (req, res) => {
 //hoàn thành
 module.exports.allServices = async (req, res) => {
   try {
-    const listServices = await services.find({}).sort({createdAt: -1});
+    const listServices = await services.find({}).sort({ createdAt: -1 });
     return res.status(200).json({
       message: "Lay danh sach dich vu thanh cong",
       data: listServices,

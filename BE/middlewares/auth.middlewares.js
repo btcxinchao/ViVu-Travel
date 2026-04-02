@@ -23,9 +23,9 @@ const verifyToken = function (req, res, next) {
         }
         try {
           // Tìm user trong DB
-          const user = await User.findById(decodedUser.userId).select(
-            "-hashedPassword",
-          );
+          const user = await accounts
+            .findById(decodedUser.userId)
+            .select("-hashedPassword");
           if (!user) {
             return res
               .status(404)

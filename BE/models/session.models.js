@@ -4,7 +4,7 @@ const sessionSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Account", // Lưu ý: Chỗ này phải khớp với tên Model bạn đặt trong file account.models.js
+      ref: "Account",
       required: true,
       index: true,
     },
