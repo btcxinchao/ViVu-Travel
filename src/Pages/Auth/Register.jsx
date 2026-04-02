@@ -1,26 +1,57 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
+import CustomApi from "../../Server";
 import { FaLocationDot, FaRegEye, FaRegEyeSlash } from "../../assets/Icons/Icons";
+
 export default function Register() {
   const [form, setForm] = useState({
-    name: "",
+    fullName: "",
     email: "",
     phone: "",
     password: "",
-    confirmPassword: ""
+    confirmPass: "",
   });
-
   const [show, setShow] = useState({
     password: false,
-    confirmPassword: false
+    confirmPassword: false,
   });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const handleChange = (key, value) => {
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
-      [key]: value
+      [key]: value,
     }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
+    setError("");
+
+    try {
+      const res = await CustomApi({
+        Url: "/api/auth/register",
+        method: "POST",
+        data: form,
+      });
+
+      setMessage(res.message || "Dang ky thanh cong");
+      setForm({
+        fullName: "",
+        email: "",
+        phone: "",
+        password: "",
+        confirmPass: "",
+      });
+    } catch (apiError) {
+      setError(apiError.message || "Dang ky that bai");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
