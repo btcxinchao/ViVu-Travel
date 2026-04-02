@@ -2,8 +2,8 @@ import React from 'react'
 
 const DashboardProvider = () => {
     return (
-        <div>
-            cc
+        <div className='flex '>
+
         </div>
     )
 }

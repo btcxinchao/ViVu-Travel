@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import CustomApi from "../../Server";
 import { FaLocationDot, FaRegEye, FaRegEyeSlash } from "../../assets/Icons/Icons";
+import CustomApi from "../../../Server";
 
 export default function Register() {
   const [form, setForm] = useState({

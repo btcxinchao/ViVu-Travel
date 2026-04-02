@@ -2,7 +2,7 @@ const accounts = require("../models/account.models.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const Session = require("../models/Session");
+const Session = require("../models/session.models.js");
 
 const ACCESS_TOKEN_TTL = "30m"; // Thường dưới 15m khi deploy
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000; // 14 ngày
