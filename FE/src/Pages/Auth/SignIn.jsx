@@ -41,13 +41,10 @@ function SignIn() {
         localStorage.setItem("accessToken", accessToken);
       }
 
-      if (refreshToken) {
-        localStorage.setItem("refreshToken", refreshToken);
-      }
-
       if (user) {
         localStorage.setItem("currentUser", JSON.stringify(user));
       }
+      window.location.reload();
 
       navigate("/");
     } catch (apiError) {

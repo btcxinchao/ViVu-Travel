@@ -1,10 +1,22 @@
-import { useState } from "react";
-import { FaLocationDot, FaRegStar, FaPhone, FaUser, MdOutlineDashboard } from "../assets/Icons/Icons";
+import { useEffect, useState } from "react";
+import { FaLocationDot, FaRegStar, FaPhone, FaUser, MdOutlineDashboard, CiLogin } from "../assets/Icons/Icons";
 import { SiGmail } from "react-icons/si";
 import { Link } from "react-router-dom";
 
 function Header() {
-    const [isCheck, setIsCheck] = useState(false);
+    const accessToken = localStorage.getItem("accessToken");
+    const user = JSON.parse(localStorage.getItem("currentUser") || "null");
+    const isCheck = !!accessToken;
+    { console.log(user) }
+
+
+    const Logout = () => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("currentUser");
+
+        window.location.reload();
+    };
+
 
     return (
         <nav className="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
@@ -22,11 +34,11 @@ function Header() {
                                 Xin Chào <FaUser />
                                 {/* Cần Render Tên Khi Nhận dữ liệu từ backend */}
                                 <span className="text-[#f97316] ">
-                                    Nguyễn Minh Anh
+                                    {user?.fullName}
                                 </span>
                             </span>
                             <span className="ml-2 px-2 py-0.5 bg-white/10 rounded text-[11px]">
-                                Khách Hàng
+                                {user?.role == "user" ? "Khách Hàng" : ""}
                             </span>
                         </span>
                     )}
@@ -71,10 +83,18 @@ function Header() {
                             </Link>
                         </>
                     ) : (
-                        <Link to="/dashboard" className="flex items-center gap-1.5 px-4 py-2 bg-[#f0f4f8] text-[#1a1a2e] rounded-full hover:bg-[#f97316]/10 transition-colors">
-                            <MdOutlineDashboard />
-                            Dashboard
-                        </Link>
+                        <>
+                            <Link to="/dashboard" className="flex items-center gap-1.5 px-4 py-2 bg-[#f0f4f8] text-[#1a1a2e] rounded-full hover:bg-[#f97316]/10 transition-colors">
+                                <MdOutlineDashboard />
+                                Dashboard
+                            </Link>
+                            <button onClick={Logout} className="flex items-center gap-1.5 px-2 py-2 text-muted-foreground hover:text-[#ef4444] transition-colors">
+                                <span>
+                                    <CiLogin />
+                                </span>
+                                Đăng Xuất
+                            </button>
+                        </>
                     )}
                 </div>
             </header>
