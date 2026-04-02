@@ -44,9 +44,10 @@ function SignIn() {
       if (user) {
         localStorage.setItem("currentUser", JSON.stringify(user));
       }
+      navigate("/");
       window.location.reload();
 
-      navigate("/");
+
     } catch (apiError) {
       setError(apiError.message || "Dang nhap that bai");
     } finally {

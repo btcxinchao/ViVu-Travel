@@ -4,10 +4,10 @@ module.exports.addServices = async (req, res) => {
   try {
     // Lấy dữ liệu từ body gửi lên
     const { tourID, supplier, servicesName, slug,
-      category, destination,descriptionDetail,prices, rating,
+      category, destination, descriptionDetail, prices, rating,
       total_review, status, location, thumbnail, images, schedule,
-      duration,highlights,includedServices,meals, experiences,
-      accommodation,policies, supplierRating,tags,} = req.body;
+      duration, highlights, includedServices, meals, experiences,
+      accommodation, policies, supplierRating, tags, } = req.body;
 
     // Tạo service mới
     const newService = new services({
@@ -29,7 +29,7 @@ module.exports.addServices = async (req, res) => {
       duration,
       highlights,
       includedServices,
-      meals,experiences,
+      meals, experiences,
       accommodation, policies,
       supplierRating, tags,
     });
@@ -193,19 +193,57 @@ exports.servicesDetail = async (req, res) => {
 };
 
 //hoàn thành
+// module.exports.allServices = async (req, res) => {
+//   try {
+//     const listServices = await services.find({}).sort({
+//       createdAt: -1
+//     });
+
+//     return res.status(200).json({
+//       message: "Lay danh sach dich vu thanh cong",
+//       data: listServices,
+//     });
+//   } catch (error) {
+//     return res.status(400).json({
+//       message: error.message || "Lay danh sach dich vu that bai",
+//     });
+//   }
+// };
+
 module.exports.allServices = async (req, res) => {
   try {
-    const listServices = await services.find({}).sort({
-      createdAt: -1
-    });
+    // 👇 lấy page từ query (?page=1)
+    const page = parseInt(req.query.page) || 1;
+    const limit = 6; // số item mỗi trang
+
+    const skip = (page - 1) * limit;
+
+    // 👇 lấy data có phân trang
+    const listServices = await services
+      .find({})
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    // 👇 đếm tổng
+    const total = await services.countDocuments();
 
     return res.status(200).json({
-      message: "Lay danh sach dich vu thanh cong",
+      success: true,
+      message: "Lấy danh sách dịch vụ thành công",
       data: listServices,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPage: Math.ceil(total / limit),
+      }
     });
+
   } catch (error) {
-    return res.status(400).json({
-      message: error.message || "Lay danh sach dich vu that bai",
+    return res.status(500).json({ // 👈 sửa 400 → 500
+      success: false,
+      message: error.message || "Lấy danh sách dịch vụ thất bại",
     });
   }
 };

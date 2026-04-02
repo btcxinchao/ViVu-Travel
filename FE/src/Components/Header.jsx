@@ -84,10 +84,12 @@ function Header() {
                         </>
                     ) : (
                         <>
-                            <Link to="/dashboard" className="flex items-center gap-1.5 px-4 py-2 bg-[#f0f4f8] text-[#1a1a2e] rounded-full hover:bg-[#f97316]/10 transition-colors">
-                                <MdOutlineDashboard />
-                                Dashboard
-                            </Link>
+                            {user.role == "provider" ? (
+                                <Link to="/admin/dashboard" className="flex items-center gap-1.5 px-4 py-2 bg-[#f0f4f8] text-[#1a1a2e] rounded-full hover:bg-[#f97316]/10 transition-colors">
+                                    <MdOutlineDashboard />
+                                    Dashboard
+                                </Link>) : ("")
+                            }
                             <button onClick={Logout} className="flex items-center gap-1.5 px-2 py-2 text-muted-foreground hover:text-[#ef4444] transition-colors">
                                 <span>
                                     <CiLogin />
