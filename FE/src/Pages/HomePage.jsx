@@ -1,4 +1,45 @@
+import { useState } from "react";
+import { FaShield, FaHeadphones, FaHeart, FaClock, MdStar } from "../assets/Icons/Icons"
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
+
+const comments = [
+    {
+        star: 5,
+        comment:
+            "Chuyến đi Hạ Long tuyệt vời! Dịch vụ chuyên nghiệp, hướng dẫn viên nhiệt tình.",
+        name: "Nguyễn Minh Anh",
+        short: "MA",
+    },
+    {
+        star: 4,
+        comment:
+            "Trải nghiệm ổn, sẽ quay lại lần sau!",
+        name: "Nguyễn Anh",
+        short: "NA",
+    },
+    {
+        star: 5,
+        comment:
+            "Dịch vụ ok, nhưng cần cải thiện thêm.",
+        name: "Hà Vũ Anh",
+        short: "VA",
+    },
+];
+
 function HomePage() {
+    const [index, setIndex] = useState(0);
+
+    const handlePrev = () => {
+        setIndex((prev) =>
+            prev === 0 ? comments.length - 1 : prev - 1
+        );
+    };
+
+    const handleNext = () => {
+        setIndex((prev) =>
+            prev === comments.length - 1 ? 0 : prev + 1
+        );
+    };
 
     return (
         <main className="flex-1">
@@ -34,7 +75,7 @@ function HomePage() {
                         </div>
 
                         {/* Search box */}
-                        <div className="bg-white rounded-2xl p-4 md:p-2 shadow-2xl max-w-4xl flex flex-col md:flex-row gap-3 md:gap-0 md:items-center">
+                        <div className="bg-white rounded-2xl mt-4 p-4 md:p-2 shadow-2xl max-w-4xl flex flex-col md:flex-row gap-3 md:gap-0 md:items-center">
 
                             {/* Keyword */}
                             <div className="flex-1 px-4 py-2 md:border-r border-gray-100">
@@ -94,122 +135,128 @@ function HomePage() {
                 </section>
                 <section className="py-20 bg-[#f8fafc]">
                     <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div className="bg-white rounded-2xl p-6 text-center hover:shadow-xl transition-shadow group">
-                            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#f97316]/10 flex items-center justify-center mb-4 group-hover:bg-[#f97316] transition-colors">
 
-                            </div>
-                            <h3 className="font-size: 16px; font-weight: 600;">An toàn & Bảo đảm</h3>
-                            <p className="text-muted-foreground mt-2">Cam kết an toàn tuyệt đối trong mọi chuyến đi </p>
-                        </div>
-                        <div className="bg-white rounded-2xl p-6 text-center hover:shadow-xl transition-shadow group">
-                            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#f97316]/10 flex items-center justify-center mb-4 group-hover:bg-[#f97316] transition-colors">
+                        {[FaShield, FaHeadphones, FaHeart, FaClock].map((Icon, i) => (
+                            <div key={i} className="bg-white rounded-2xl p-6 text-center group hover:shadow-xl transition">
 
-                            </div>
-                            <h3 className="font-size: 16px; font-weight: 600;">Hỗ trợ 24/7</h3>
-                            <p className="text-muted-foreground mt-2">Đội ngũ tư vấn luôn sẵn sàng hỗ trợ bạn </p>
-                        </div>
-                        <div className="bg-white rounded-2xl p-6 text-center hover:shadow-xl transition-shadow group">
-                            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#f97316]/10 flex items-center justify-center mb-4 group-hover:bg-[#f97316] transition-colors">
+                                <div className="w-14 h-14 mx-auto rounded-2xl bg-[#f97316]/10 flex items-center justify-center mb-4 group-hover:bg-[#f97316] transition">
+                                    <Icon className="text-[#f97316] group-hover:text-white transition" />
+                                </div>
 
-                            </div>
-                            <h3 className="font-size: 16px; font-weight: 600;">Trải nghiệm độc đáo</h3>
-                            <p className="text-muted-foreground mt-2">Khám phá những điều đặc biệt nhất mỗi vùng đất</p>
-                        </div>
-                        <div className="bg-white rounded-2xl p-6 text-center hover:shadow-xl transition-shadow group">
-                            <div className="w-14 h-14 mx-auto rounded-2xl bg-[#f97316]/10 flex items-center justify-center mb-4 group-hover:bg-[#f97316] transition-colors">
+                                <h3 className="text-[16px] font-semibold">
+                                    {["An toàn", "Hỗ trợ 24/7", "Trải nghiệm", "Linh hoạt"][i]}
+                                </h3>
 
+                                <p className="text-gray-500 mt-2 text-sm">
+                                    Dịch vụ chất lượng cao
+                                </p>
                             </div>
-                            <h3 className="font-size: 16px; font-weight: 600;">Linh hoạt</h3>
-                            <p className="text-muted-foreground mt-2">Tùy chỉnh lịch trình theo nhu cầu riêng</p>
-                        </div>
+                        ))}
                     </div>
                 </section>
                 <section className="py-20">
-                    <div className="max-w-7xl mx-auto px-6">
-                        <div className="text-center mb-14">
-                            <span className="text-[#f97316] mb-2 block font-size: 14px; font-weight: 600; letter-spacing: 2px;">
-                                Khám Phá
-                            </span>
-                            <h2 className="font-family: &quot;Playfair Display&quot;, serif; font-size: clamp(28px, 4vw, 40px); font-weight: 700; color: rgb(26, 26, 46);">
-                                Dịch Vụ
-                                <span className="text-[#f97316]">Nổi Bật</span>
-                                <p className="text-muted-foreground mt-3 max-w-lg mx-auto">
-                                    Được đăng tải bởi các đối tác uy tín trên hệ thống
-                                </p>
-                            </h2>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <div className="opacity: 1; transform: none;">
-                                <a href="">
-                                    <div className="relative rounded-2xl overflow-hidden">
-                                        <img src="" alt="" />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
-                                        </div>
-                                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1">
-                                            <span>
+                    <div className="max-w-7xl mx-auto px-6 text-center mb-10">
+                        <span className="text-[#f97316] text-sm font-semibold tracking-widest">
+                            KHÁM PHÁ
+                        </span>
 
-                                            </span>
-                                            <span className="font-size: 13px; font-weight: 600;">
-                                                4.9
-                                            </span>
-                                        </div>
-                                        <div className="absolute bottom-4 left-4 right-4 text-white">
-                                            <h3>Du thuyền Hạ Long 5 sao</h3>
-                                            <p className="text-white/70 flex items-center gap-1 mt-1"><span>iCON</span>
-                                                Quảng Ninh</p>
-                                        </div>
-                                    </div>
-                                    <div className="mt-4 flex items-center justify-between">
-                                        <div>
-                                            <p className="text-[#f97316]">4.990.000 đ</p>
-                                            <p className="text-muted-foreground"> Bởi Công ty Du lịch Hạ Long Star</p>
-                                        </div>
-                                        <div className="w-10 h-10 rounded-full bg-[#f97316]/10 flex items-center justify-center hover:bg-[#f97316] hover:text-white text-[#f97316] transition-colors">
+                        <h2 className="font-serif text-[clamp(28px,4vw,40px)] font-bold mt-2">
+                            Dịch Vụ <span className="text-[#f97316]">Nổi Bật</span>
+                        </h2>
+                    </div>
 
-                                        </div>
-                                    </div>
-                                </a>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto px-6">
 
+                        <div className="rounded-2xl overflow-hidden shadow hover:shadow-lg transition">
+                            <img
+                                src="https://images.unsplash.com/photo-1501785888041-af3ef285b470"
+                                alt=""
+                                className="h-48 w-full object-cover"
+                            />
+
+                            <div className="p-4 text-left">
+                                <h3 className="font-semibold">Du thuyền Hạ Long</h3>
+                                <p className="text-gray-500 text-sm">Quảng Ninh</p>
+                                <p className="text-[#f97316] font-semibold mt-2">4.990.000đ</p>
                             </div>
-                        </div>
-                        <div className="text-center mt-10">
-                            <a href="" className="inline-flex items-center gap-2 px-8 py-3 border-2 border-[#f97316] text-[#f97316] rounded-full hover:bg-[#f97316] hover:text-white transition-all">Xem tất cả dịch vụ </a>
                         </div>
 
                     </div>
                 </section>
+
                 <section className="relative py-24 overflow-hidden">
                     <div className="absolute inset-0">
-                        <img src="M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMGxhbmRzY2FwZSUyMGFkdmVudHVyZSUyMHRyYXZlbHxlbnwxfHx8fDE3NzQyODk3NjR8MA" alt="" />
+                        <img className="w-full h-full object-cover" src="https://images.unsplash.com/photo-1673505413397-0cd0dc4f5854?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMGxhbmRzY2FwZSUyMGFkdmVudHVyZSUyMHRyYXZlbHxlbnwxfHx8fDE3NzQyODk3NjR8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="" />
                         <div className="absolute inset-0 bg-[#1a1a2e]/80">
                         </div>
                     </div>
                     <div className="relative z-10 max-w-3xl mx-auto text-center px-6">
-                        <h2 className="text-white mb-4">
+                        <h2 className="text-white mb-4 text-[48px]">
                             Bạn là nhà cung cấp dịch vụ du lịch?
                         </h2>
                         <p className="text-white/60 mb-8">
                             Đăng ký làm đối tác VIVU Travel để đăng tải dịch vụ và tiếp cận hàng nghìn khách hàng tiềm năng
                         </p>
-                        <a href="" className="inline-block px-8 py-3.5 bg-gradient-to-r from-[#f97316] to-[#f59e0b] text-white rounded-full hover:shadow-lg transition-all">
+                        <a href="" className="inline-block px-8 mt-4 py-3.5 bg-gradient-to-r from-[#f97316] to-[#f59e0b] text-white rounded-full hover:shadow-lg transition-all">
                             Đăng ký đối tác ngay
                         </a>
                     </div>
                 </section>
                 <section className="py-20 bg-[#f8fafc]">
                     <div className="max-w-7xl mx-auto px-6">
+
                         <div className="text-center mb-14">
-                            <span className="text-[#f97316] mb-2 block">
+                            <span className="text-[#f97316] mb-2 block text-l font-semibold tracking-widest">
                                 ĐÁNH GIÁ
                             </span>
-                            <h2 className="font-family: &quot;Playfair Display&quot;, serif; font-size: clamp(28px, 4vw, 40px); font-weight: 700; color: rgb(26, 26, 46);">
-                                Khách hàng
+
+                            <h2 className="font-serif font-semibold text-[#1a1a2e] text-[40px]">
+                                Khách hàng{" "}
                                 <span className="text-[#f97316]">
                                     nói gì
                                 </span>
                             </h2>
                         </div>
-                        <div className="max-w-2xl mx-auto"></div>
+
+                        <div className="max-w-2xl mx-auto">
+                            <div className="bg-white rounded-3xl p-10 shadow-lg text-center">
+                                <div className="flex justify-center gap-1 mb-4">
+                                    {[...Array(5)].map((_, i) => (
+                                        <MdStar
+                                            key={i}
+                                            className={`w-6 h-6 ${i < comments[index].star
+                                                ? "text-[#f59e0b]"
+                                                : "text-gray-300"
+                                                }`}
+                                        />
+                                    ))}
+                                </div>
+                                <p>
+                                    {comments[index].comment}
+                                </p>
+                                <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-[#f97316] to-[#f59e0b] flex items-center justify-center text-white mb-3">
+                                    {comments[index].short}
+                                </div>
+                                <p>
+                                    {comments[index].name}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex justify-center gap-4 mt-8">
+                        <button
+                            onClick={handlePrev}
+                            className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center hover:bg-[#f97316] hover:text-white transition"
+                        >
+                            <FaArrowLeft />
+                        </button>
+
+                        <button
+                            onClick={handleNext}
+                            className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center hover:bg-[#f97316] hover:text-white transition"
+                        >
+                            <FaArrowRight />
+                        </button>
                     </div>
                 </section>
             </div>

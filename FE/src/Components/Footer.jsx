@@ -7,8 +7,8 @@ function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div>
                         <div className="flex items-center gap-2 mb-4">
-                            <div className="w-9 h-9 bg-gradient-to-br from-sky-500 to-teal-500 rounded-xl flex items-center justify-center">
-                                <span>icon</span>
+                            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#f97316] to-[#f59e0b] flex items-center justify-center text-white">
+                                <FaLocationDot />
                             </div>
                             <span className="font-size: 1.25rem; font-weight: 700;"> ViVu Travel</span>
                         </div>
@@ -24,20 +24,20 @@ function Footer() {
                     <div>
                         <h4 className="text-white font-semibold mb-4">Dịch Vụ</h4>
                         <ul className="flex flex-col space-y-2 text-sm">
-                            <li><Link className="hover:text-sky-400 transition-colors">Tour du lịch</Link></li>
-                            <li><Link className="hover:text-sky-400 transition-colors">Khách sạn & Resort</Link></li>
-                            <li><Link className="hover:text-sky-400 transition-colors">Vé tham quan</Link></li>
-                            <li><Link className="hover:text-sky-400 transition-colors">Gợi ý theo mùa</Link></li>
+                            <li><Link className="hover:text-[#f97316] transition-colors">Tour du lịch</Link></li>
+                            <li><Link className="hover:text-[#f97316] transition-colors">Khách sạn & Resort</Link></li>
+                            <li><Link className="hover:text-[#f97316] transition-colors">Vé tham quan</Link></li>
+                            <li><Link className="hover:text-[#f97316] transition-colors">Gợi ý theo mùa</Link></li>
                         </ul>
                     </div>
                     <div>
                         <h4 className="text-white font-semibold mb-4">Hỗ trợ</h4>
                         <ul className="flex flex-col space-y-2 text-sm">
-                            <li><Link className="hover:text-sky-400 transition-colors">Trung tâm trợ giúp</Link> </li>
-                            <li><Link className="hover:text-sky-400 transition-colors">Chính sách hoàn tiền</Link> </li>
-                            <li><Link className="hover:text-sky-400 transition-colors">Điều khoản dịch vụ</Link> </li>
-                            <li><Link className="hover:text-sky-400 transition-colors">Chính sách bảo mật</Link> </li>
-                            <li><Link className="hover:text-sky-400 transition-colors">Đăng ký làm đối tác</Link> </li>
+                            <li><Link className="hover:text-[#f97316] transition-colors">Trung tâm trợ giúp</Link> </li>
+                            <li><Link className="hover:text-[#f97316] transition-colors">Chính sách hoàn tiền</Link> </li>
+                            <li><Link className="hover:text-[#f97316] transition-colors">Điều khoản dịch vụ</Link> </li>
+                            <li><Link className="hover:text-[#f97316] transition-colors">Chính sách bảo mật</Link> </li>
+                            <li><Link className="hover:text-[#f97316] transition-colors">Đăng ký làm đối tác</Link> </li>
                         </ul>
                     </div>
                     <div>
