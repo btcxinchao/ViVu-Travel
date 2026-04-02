@@ -3,11 +3,32 @@ const services = require("../models/services.model.js");
 module.exports.addServices = async (req, res) => {
   try {
     // Lấy dữ liệu từ body gửi lên
-    const { tourID, supplier, servicesName, slug,
-      category, destination,descriptionDetail,prices, rating,
-      total_review, status, location, thumbnail, images, schedule,
-      duration,highlights,includedServices,meals, experiences,
-      accommodation,policies, supplierRating,tags,} = req.body;
+    const {
+      tourID,
+      supplier,
+      servicesName,
+      slug,
+      category,
+      destination,
+      descriptionDetail,
+      prices,
+      rating,
+      total_review,
+      status,
+      location,
+      thumbnail,
+      images,
+      schedule,
+      duration,
+      highlights,
+      includedServices,
+      meals,
+      experiences,
+      accommodation,
+      policies,
+      supplierRating,
+      tags,
+    } = req.body;
 
     // Tạo service mới
     const newService = new services({
@@ -29,9 +50,12 @@ module.exports.addServices = async (req, res) => {
       duration,
       highlights,
       includedServices,
-      meals,experiences,
-      accommodation, policies,
-      supplierRating, tags,
+      meals,
+      experiences,
+      accommodation,
+      policies,
+      supplierRating,
+      tags,
     });
 
     // Lưu vào DB
@@ -59,11 +83,11 @@ module.exports.putServices = async (req, res) => {
       updateData.thumbnail = req.file.path; // multer sẽ lưu vào /uploads
     }
 
-    const updatedService = await services.findByIdAndUpdate(
-      id,
-      updateData,
-      { new: true, runValidators: true, overwrite: true }
-    );
+    const updatedService = await services.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+      overwrite: true,
+    });
 
     if (!updatedService) {
       return res.status(404).json({ message: "Service không tồn tại" });
@@ -93,7 +117,7 @@ module.exports.patchServices = async (req, res) => {
     const updatedService = await services.findByIdAndUpdate(
       id,
       { $set: updateFields },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!updatedService) {
@@ -116,27 +140,23 @@ module.exports.patchServices = async (req, res) => {
 module.exports.deleteOne = async (req, res) => {
   try {
     //lấy ra id services và xóa đi sv đó
-    const {
-      id
-    } = req.params;
-    const deletedService = await Services.findByIdAndDelete(id);
+    const { id } = req.params;
+    const deletedService = await services.findByIdAndDelete(id);
 
     //check đk để xóa
     if (!deletedService) {
       return res.status(404).json({
-        message: "Service không tồn tại"
+        message: "Service không tồn tại",
       });
     }
 
     return res.status(200).json({
       message: "Xóa service thành công",
-
-      //id sản phẩm đã xóa
       data: deletedService,
     });
   } catch (error) {
     return res.status(500).json({
-      message: "Lỗi server"
+      message: "Lỗi server",
     });
   }
 };
@@ -144,50 +164,39 @@ module.exports.deleteOne = async (req, res) => {
 // Xóa nhiều service theo danh sách ID
 module.exports.deleteServices = async (req, res) => {
   try {
-    const {
-      ids
-    } = req.body;
+    const { ids } = req.body;
     // nhận mảng id từ body
 
     if (!ids || !Array.isArray(ids)) {
       return res.status(400).json({
-        message: "Danh sách ID không hợp lệ"
+        message: "Danh sách ID không hợp lệ",
       });
     }
 
-    const result = await Services.deleteMany({
-      _id: {
-        $in: ids
-      }
-    });
+    const DeleteMany = await services.deleteMany({ _id: { $in: ids } });
 
-    return res.status(200).json({
-      message: "Xóa nhiều service thành công",
-      deletedCount: result,
-    });
+    return res.status(200).json({ message: "Xóa nhiều service thành công",deletedCount: DeleteMany,});
   } catch (error) {
     return res.status(500).json({
-      message: "Lỗi server"
+      message: "Lỗi server",
     });
   }
 };
 //hoàn thành
 exports.servicesDetail = async (req, res) => {
   try {
-    const {
-      id
-    } = req.params;
+    const { id } = req.params;
     const service = await services.findById(id);
 
     if (!service) {
       return res.status(404).json({
-        message: "Không tìm thấy dịch vụ"
+        message: "Không tìm thấy dịch vụ",
       });
     }
     res.json(service);
   } catch (error) {
     res.status(500).json({
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -195,10 +204,7 @@ exports.servicesDetail = async (req, res) => {
 //hoàn thành
 module.exports.allServices = async (req, res) => {
   try {
-    const listServices = await services.find({}).sort({
-      createdAt: -1
-    });
-
+    const listServices = await services.find({}).sort({createdAt: -1});
     return res.status(200).json({
       message: "Lay danh sach dich vu thanh cong",
       data: listServices,
