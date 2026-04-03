@@ -1,13 +1,12 @@
 const services = require("../models/services.model.js");
 
+
+
 module.exports.addServices = async (req, res) => {
   try {
-    // Lấy dữ liệu từ body gửi lên
     const {
-      tourID,
       supplier,
       servicesName,
-      slug,
       category,
       destination,
       descriptionDetail,
@@ -30,12 +29,31 @@ module.exports.addServices = async (req, res) => {
       tags,
     } = req.body;
 
-    // Tạo service mới
+    if (!servicesName || !prices || !destination) {
+      return res.status(400).json({
+        success: false,
+        message: "Thiếu thông tin bắt buộc: servicesName, prices, destination",
+      });
+    }
+
+    if (typeof prices !== "number" || prices <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Giá dịch vụ phải là số dương",
+      });
+    }
+
+    if (rating && (rating < 0 || rating > 5)) {
+      return res.status(400).json({
+        success: false,
+        message: "Rating phải nằm trong khoảng 0 - 5",
+      });
+    }
+
+    // tourID sẽ tự sinh từ default trong schema
     const newService = new services({
-      tourID,
       supplier,
       servicesName,
-      slug,
       category,
       destination,
       descriptionDetail,
@@ -58,20 +76,22 @@ module.exports.addServices = async (req, res) => {
       tags,
     });
 
-    // Lưu vào DB
     const saveData = await newService.save();
 
     return res.status(201).json({
+      success: true,
       message: "Thêm dịch vụ thành công",
       data: saveData,
     });
   } catch (error) {
     return res.status(500).json({
+      success: false,
       message: "Lỗi khi thêm dịch vụ",
       error: error.message,
     });
   }
 };
+
 
 module.exports.putServices = async (req, res) => {
   try {
@@ -174,19 +194,20 @@ module.exports.deleteServices = async (req, res) => {
     }
 
     const DeleteMany = await services.deleteMany({ _id: { $in: ids } });
-
     return res
       .status(200)
       .json({
         message: "Xóa nhiều service thành công",
         deletedCount: DeleteMany,
       });
+    return res.status(200).json({ message: "Xóa nhiều service thành công", deletedCount: DeleteMany, });
   } catch (error) {
     return res.status(500).json({
       message: "Lỗi server",
     });
   }
 };
+
 //hoàn thành
 exports.servicesDetail = async (req, res) => {
   try {
@@ -206,17 +227,41 @@ exports.servicesDetail = async (req, res) => {
   }
 };
 
-//hoàn thành
+
 module.exports.allServices = async (req, res) => {
   try {
-    const listServices = await services.find({}).sort({ createdAt: -1 });
+    const page = parseInt(req.query.page) || 1;
+    const limit = 6;
+
+    const skip = (page - 1) * limit;
+
+    // lấy data phân trang
+    const data = await services
+      .find({})
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    // tổng số lượng
+    const total = await services.countDocuments();
+
     return res.status(200).json({
-      message: "Lay danh sach dich vu thanh cong",
-      data: listServices,
+      success: true,
+      message: "Lấy danh sách dịch vụ thành công",
+      data: data,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPage: Math.ceil(total / limit),
+      }
     });
+
   } catch (error) {
-    return res.status(400).json({
-      message: error.message || "Lay danh sach dich vu that bai",
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Lấy danh sách dịch vụ thất bại",
     });
   }
 };
+
